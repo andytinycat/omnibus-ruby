@@ -39,6 +39,7 @@ module Omnibus
       @exclusions = Array.new
       @runtime_dependencies = Array.new
       @conflicts = Array.new
+      @extra_files = Array.new
 
       instance_eval(io)
       render_tasks
@@ -124,6 +125,10 @@ module Omnibus
 
     def conflicts(val)
       @conflicts = val
+    end
+
+    def extra_files(val)
+      @extra_files = val
     end
 
     def exclude(pattern)
@@ -225,6 +230,10 @@ module Omnibus
 			@conflicts.each do |conflict|
 				command_and_opts << "--conflicts '#{conflict}'"
 			end
+
+      @extra_files.each do |extra_file|
+        command_and_opts << extra_file
+      end
 
       command_and_opts << " --replaces #{@replaces}" if @replaces
       command_and_opts
